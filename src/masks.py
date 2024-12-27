@@ -1,7 +1,7 @@
 from typing import Union
 
 
-def get_mask_card_number(card_number: Union[int]) -> Union[str]:
+def get_mask_card_number(card_number: Union[str]) -> Union[str]:
     """Функция, которая принимает номер карты числом,возвращает строку в формате маски"""
     card_number_card_str = str(card_number)
 
@@ -12,12 +12,12 @@ def get_mask_card_number(card_number: Union[int]) -> Union[str]:
     return masked_number_card
 
 
-def get_mask_account(account_number: Union[int]) -> Union[str]:
+def get_mask_account(account_number: Union[str]) -> Union[str]:
     """Функция, которая принимает номер счета числом, а возвращает строку в формате маски"""
     account_number_str = str(account_number)
 
-    if len(account_number_str) != 6:
+    if len(account_number_str) != 20:
         return "Неверно введен номер счета"
 
-    masked_number_account = f"**{account_number_str[2:]}"
+    masked_number_account = f"**{account_number_str[-4:]}"
     return masked_number_account
