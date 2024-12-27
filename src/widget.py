@@ -22,3 +22,9 @@ def mask_account_card(card_type_number: str) -> str:
         return "Неправильно введен номер или счет карты"
 
     return "".join(new_letters_list) + " " + masked_number
+
+
+def get_date(data_form: str) -> str:
+    """Функция преобразует формат даты в ДД.ММ.ГГГГ"""
+    data_new_form = f"{data_form[8:10]}.{data_form[5:7]}.{data_form[0:4]}"
+    return data_new_form
