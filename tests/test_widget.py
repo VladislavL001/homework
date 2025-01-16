@@ -5,10 +5,15 @@ from src.widget import mask_account_card, get_date
                                                   ("Счет 73654108430135874305", "Счет **4305"),
                                                   ("Maestro 1596837868705199", "Maestro 1596 83** **** 5199"),
                                                   ("Счет 64686473678894779589", "Счет **9589"),
-                                                  ("MasterCard 7158300734726758", "MasterCard 7158 30** **** 6758")
+                                                  ("MasterCard     7158300734726758", "MasterCard 7158 30** **** 6758")
                                                   ])
 def test_mask_account_card (account_card, example):
     assert mask_account_card(account_card) == example
 
-def test_mask_account_card_error_input():
-    pass
+
+@pytest.mark.parametrize ("account_card", [(""),
+                                           ("..."),
+                                           ("Visa Platinum"),
+                                           ])
+def test_mask_account_card_error_input(account_card):
+    assert mask_account_card(account_card) == "Неправильно введен номер или счет карты"

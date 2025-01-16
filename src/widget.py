@@ -1,30 +1,42 @@
+import re
 from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(card_type_number: str) -> str:
     """Функция принимает тип и номер карты, возвращает строку с замаскированным номером"""
-    new_letters_list = []
-    new_number_list = []
+    pattern = r'(\d+)|(\s+)|([^\d\s]+)'
+    matches = re.findall(pattern, card_type_number)
 
-    for item_card in card_type_number:
-        if item_card.isalpha() or item_card == " ":
-            new_letters_list.append(item_card)
-        elif item_card.isdigit():
-            new_number_list.append(item_card)
+    result = {
+        "words": [],
+        "spaces": [],
+        "numbers": []
+    }
 
-    new_number_str = "".join(new_number_list)
+    for match in matches:
+        if match[0]:  # Если совпадение в группе для цифр
+            result["numbers"].append(match[0])
+        elif match[1]:  # Если совпадение в группе для пробелов
+            result["spaces"].append(match[1])
+        elif match[2]:  # Если совпадение в группе для слов
+            result["words"].append(match[2])
 
-    if len(new_number_str) == 16:
-        masked_number = get_mask_card_number(new_number_str)
-    elif len(new_number_str) == 20:
-        masked_number = get_mask_account(new_number_str)
+    words_str = " ".join(result.get ("words"))
+    number_str = "".join(result.get ("numbers"))
+
+    if len(number_str) == 16:
+        masked_number = get_mask_card_number(number_str)
+    elif len(number_str) == 20:
+        masked_number = get_mask_account(number_str)
     else:
         return "Неправильно введен номер или счет карты"
 
-    return "".join(new_letters_list) + "" + masked_number
+    return words_str + " " + masked_number
 
 
 def get_date(data_form: str) -> str:
     """Функция преобразует формат даты в ДД.ММ.ГГГГ"""
     data_new_form = f"{data_form[8:10]}.{data_form[5:7]}.{data_form[0:4]}"
     return data_new_form
+
+print (mask_account_card ("Visa Platinum 7000792289606361"))
