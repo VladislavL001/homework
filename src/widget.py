@@ -9,7 +9,7 @@ def mask_account_card(card_type_number: str) -> str:
     for item_card in card_type_number:
         if item_card.isalpha() or item_card == " ":
             new_letters_list.append(item_card)
-        else:
+        elif item_card.isdigit():
             new_number_list.append(item_card)
 
     new_number_str = "".join(new_number_list)
@@ -21,7 +21,7 @@ def mask_account_card(card_type_number: str) -> str:
     else:
         return "Неправильно введен номер или счет карты"
 
-    return "".join(new_letters_list) + " " + masked_number
+    return "".join(new_letters_list) + "" + masked_number
 
 
 def get_date(data_form: str) -> str:
