@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from src.masks import get_mask_account, get_mask_card_number
 
 
@@ -36,7 +37,8 @@ def mask_account_card(card_type_number: str) -> str:
 
 def get_date(data_form: str) -> str:
     """Функция преобразует формат даты в ДД.ММ.ГГГГ"""
-    data_new_form = f"{data_form[8:10]}.{data_form[5:7]}.{data_form[0:4]}"
-    return data_new_form
-
-print (mask_account_card ("Visa Platinum 7000792289606361"))
+    try:
+        parsed_date = datetime.fromisoformat(data_form)
+        return parsed_date.strftime("%d.%m.%Y")
+    except ValueError:
+        return "Неверный формат даты"

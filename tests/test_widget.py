@@ -17,3 +17,10 @@ def test_mask_account_card (account_card, example):
                                            ])
 def test_mask_account_card_error_input(account_card):
     assert mask_account_card(account_card) == "Неправильно введен номер или счет карты"
+
+
+@pytest.mark.parametrize ("data, example", [("2024-03-11T02:26:18.671407", "11.03.2024"),
+                                            ("", "Неверный формат даты"),
+                                            ("5f454dfe", "Неверный формат даты")])
+def test_get_data(data, example):
+    assert get_date (data) == example
