@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import filter_by_currency
+from src.generators import filter_by_currency, transaction_descriptions
 
 
 @pytest.fixture
@@ -78,9 +78,20 @@ def test_filter_by_currency_no_match(all_transactions: dict) -> None:
         # при вызове генератора
 
 
-def test_filter_by_currency_empty_list()-> None:
+def test_filter_by_currency_empty_list() -> None:
     """Тест для проверки обработки пустого списка транзакций"""
     result = list(filter_by_currency([], "USD"))
     assert result == []
 
 
+@pytest.mark.parametrize("example", [["Перевод организации", "Перевод со счета на счет", "Перевод заработной платы"]])
+def test_transaction_descriptions_valid(all_transactions: list, example: list) -> None:
+    """Тест на проверку фильтрации"""
+    result = list(transaction_descriptions(all_transactions))
+    assert result == example
+
+
+def test_transaction_descriptions_empty_list() -> None:
+    """Тест для проверки обработки пустого списка транзакций"""
+    result = list(transaction_descriptions([]))
+    assert result == []
