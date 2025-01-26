@@ -1,7 +1,7 @@
 from typing import Any, Iterator
 
 
-def filter_by_currency(transactions_def: list, currency_code: str = "USD") -> Iterator:
+def filter_by_currency(transactions_def: list[dict], currency_code: str = "USD") -> Iterator:
     return (
         transaction_def
         for transaction_def in transactions_def
@@ -9,7 +9,7 @@ def filter_by_currency(transactions_def: list, currency_code: str = "USD") -> It
     )
 
 
-def transaction_descriptions(transactions_def: Any) -> Iterator:
+def transaction_descriptions(transactions_def: list[dict]) -> Iterator:
     for transaction_def in transactions_def:
         yield transaction_def["description"]
 
