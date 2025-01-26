@@ -62,7 +62,7 @@ def usd_transactions() -> list:
     ]
 
 
-def test_filter_by_currency_valid(all_transactions: dict, usd_transactions: list) -> None:
+def test_filter_by_currency_valid(all_transactions: list, usd_transactions: list) -> None:
     """Тест для проверки фильтрации транзакций по USD"""
     result = list(filter_by_currency(all_transactions, "USD"))
     assert len(result) == 2
@@ -70,7 +70,7 @@ def test_filter_by_currency_valid(all_transactions: dict, usd_transactions: list
         assert i["operationAmount"]["currency"]["code"] == "USD"
 
 
-def test_filter_by_currency_no_match(all_transactions: dict) -> None:
+def test_filter_by_currency_no_match(all_transactions: list) -> None:
     """Тест для проверки обработки случая, если транзакций с заданной валютой нет"""
     result = filter_by_currency(all_transactions, "RUB")
     for _ in range(2):

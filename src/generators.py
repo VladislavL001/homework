@@ -1,7 +1,7 @@
 from typing import Any, Iterator
 
 
-def filter_by_currency(transactions_def: Any, currency_code: str = "USD") -> Iterator:
+def filter_by_currency(transactions_def: list, currency_code: str = "USD") -> Iterator:
     return (
         transaction_def
         for transaction_def in transactions_def
@@ -19,7 +19,7 @@ def card_number_generator(start: int = 1, stop: int = 9999999999999999) -> Any:
     if 1 <= start <= 9999999999999999 and 0 <= stop <= 9999999999999999:
         for number in range(start, stop + 1):
             card_number = f"{number:016}"
-            formatted_card_number = " ".join([card_number[i : i + 4] for i in range(0, 16, 4)])
+            formatted_card_number = " ".join([card_number[i: i + 4] for i in range(0, 16, 4)])
             yield formatted_card_number
     else:
         return []
