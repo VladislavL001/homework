@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import filter_by_currency, transaction_descriptions
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
 @pytest.fixture
@@ -94,4 +94,24 @@ def test_transaction_descriptions_valid(all_transactions: list, example: list) -
 def test_transaction_descriptions_empty_list() -> None:
     """Тест для проверки обработки пустого списка транзакций"""
     result = list(transaction_descriptions([]))
+    assert result == []
+
+
+@pytest.mark.parametrize(
+    "start, end, expected",
+    [
+        (1, 3, ["0000 0000 0000 0001", "0000 0000 0000 0002", "0000 0000 0000 0003"]),
+    ],
+)
+def test_card_number_generator_valid(start: int, end: int, expected: list[str]) -> None:
+    """Тест для проверки генератора на вывод верных значений"""
+    result = list(card_number_generator(start, end))
+    assert result == expected
+
+
+def test_card_number_generator_valid_max_number() -> None:
+    """Тест крайних значений"""
+    result = list(card_number_generator(-1, 5))
+    assert result == []
+    result = list(card_number_generator(1, 10000000000000000))
     assert result == []
