@@ -2,6 +2,7 @@ from typing import Any, Iterator
 
 
 def filter_by_currency(transactions_def: list[dict], currency_code: str = "USD") -> Iterator:
+    """Функция возвращает итератор с транзакциями по заданной валюте"""
     return (
         transaction_def
         for transaction_def in transactions_def
@@ -10,6 +11,7 @@ def filter_by_currency(transactions_def: list[dict], currency_code: str = "USD")
 
 
 def transaction_descriptions(transactions_def: list[dict]) -> Iterator:
+    """Функция возвращает описание всех операций"""
     for transaction_def in transactions_def:
         yield transaction_def["description"]
 
