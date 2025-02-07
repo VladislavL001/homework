@@ -27,40 +27,53 @@ def load_transactions_from_json(file_path: str) -> list[dict]:
     return data_py if isinstance(data_py, list) else []  # Тотальная обработка исключений
 
 
-def convert_to_rub(data: Union[list[dict], dict]) -> Union[list[dict], float]:
+def convert_to_rub(data: Union[list[dict], dict]) -> Union[list[dict], float, None]:
     """Конвертация валютных транзакций в рубли."""
+
     usd_rate = get_exchange_rate("1", "USD")
     eur_rate = get_exchange_rate("1", "EUR")
+
+    # Проверка на ошибки при получении курсов валют
+    if usd_rate is None or eur_rate is None:
+        print("❌ Ошибка получения валютных курсов.")
+        return []
 
     # Принимает список словарей
     if isinstance(data, list):
         list_filter_transactions = []
         for i in data:
-            temp_dict = {}
+            if not isinstance(i, dict):
+                print(f"❌ Пропускаем некорректный элемент: {i}")
+                continue
 
+            temp_dict = {}
             operation_amount = i.get("operationAmount")
             if not operation_amount:  # Если нет ключа operationAmount или его значение None, пропускаем
                 continue
 
-            key_currency_code = i.get("operationAmount", {}).get("currency", {}).get("code", {})
-            currency_amount = float(operation_amount.get("amount"))
+            try:
+                key_currency_code = operation_amount.get("currency", {}).get("code")
+                currency_amount = float(operation_amount.get("amount"))
+            except (ValueError, TypeError) as e:
+                print(f"❌ Ошибка преобразования данных транзакции: {e}")
+                continue
 
             # Если валюта в рублях
             if key_currency_code == "RUB":
-                temp_dict["id"] = i["id"]
+                temp_dict["id"] = i.get("id")
                 temp_dict["amount"] = currency_amount
                 list_filter_transactions.append(temp_dict)
 
             # Если валюта в долларах
             elif key_currency_code == "USD":
-                temp_dict["id"] = i["id"]
+                temp_dict["id"] = i.get("id")
                 amount_rub = round(currency_amount / usd_rate, 2)
                 temp_dict["amount"] = amount_rub
                 list_filter_transactions.append(temp_dict)
 
             # Если валюта в евро
             elif key_currency_code == "EUR":
-                temp_dict["id"] = i["id"]
+                temp_dict["id"] = i.get("id")
                 amount_rub = round(currency_amount / eur_rate, 2)
                 temp_dict["amount"] = amount_rub
                 list_filter_transactions.append(temp_dict)
@@ -69,8 +82,12 @@ def convert_to_rub(data: Union[list[dict], dict]) -> Union[list[dict], float]:
 
     # Принимает одинокий словарь
     elif isinstance(data, dict):
-        key_currency_code = data.get("operationAmount", {}).get("currency", {}).get("code")
-        currency_amount = float(data["operationAmount"]["amount"])
+        try:
+            key_currency_code = data.get("operationAmount", {}).get("currency", {}).get("code")
+            currency_amount = float(data["operationAmount"]["amount"])
+        except (ValueError, TypeError) as e:
+            print(f"❌ Ошибка преобразования данных транзакции: {e}")
+            return None
 
         # Если валюта в рублях
         if key_currency_code == "RUB":
@@ -84,7 +101,9 @@ def convert_to_rub(data: Union[list[dict], dict]) -> Union[list[dict], float]:
         elif key_currency_code == "EUR":
             return round(currency_amount / eur_rate, 2)
 
-    return []  # Если данные не соответствуют формату
+    # Если данные не соответствуют ни одному из типов
+    print("❌ Ошибка: данные не являются списком или словарем.")
+    return []
 
 
 transactions = load_transactions_from_json(
