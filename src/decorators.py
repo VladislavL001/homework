@@ -4,6 +4,7 @@ from typing import Any, Callable
 
 def log(filename: str = "console") -> Callable:
     """Декоратор принимает функцию с параметром вывода и выдает логи использования"""
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -23,6 +24,7 @@ def log(filename: str = "console") -> Callable:
                         f.write(log_massage)
 
         return wrapper
+
     return decorator
 
 
