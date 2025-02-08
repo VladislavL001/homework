@@ -5,6 +5,7 @@ from src.decorators import log
 
 def test_log_valid_input_console(capsys: Any) -> None:
     """Тестирование функции log при передаче верных данных и вывод инфы в консоль"""
+
     @log()
     def my_function(x: Any, y: Any) -> Any:
         return x + y
@@ -18,6 +19,7 @@ def test_log_valid_input_console(capsys: Any) -> None:
 
 def test_log_not_valid_input_console(capsys: Any) -> None:
     """Тестирование функции log при передаче неверных данных и вывод инфы в консоль"""
+
     @log()
     def my_function(x: Any, y: Any) -> Any:
         return x + y
@@ -31,6 +33,7 @@ def test_log_not_valid_input_console(capsys: Any) -> None:
 
 def test_log_valid_input_file() -> None:
     """Тестирование функции log при передаче верных данных и вывод инфы в файл"""
+
     @log(filename="mylog.txt")
     def my_function(x: Any, y: Any) -> Any:
         return x + y
@@ -46,6 +49,7 @@ def test_log_valid_input_file() -> None:
 
 def test_log_not_valid_input_file() -> None:
     """Тестирование функции log при передаче неверных данных и вывод инфы в файл"""
+
     @log(filename="mylog.txt")
     def my_function(x: Any, y: Any) -> Any:
         return x + y

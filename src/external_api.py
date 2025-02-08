@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 
 def get_exchange_rate(amount: str, base_currency: str, conversion_currency: str = "RUB") -> Union[float, None]:
-    "Функция вовзращает валютные коэф. для перевода в рубли"
+    """Функция возвращает валютные коэф. для перевода в рубли"""
     load_dotenv()
     API_KEY = os.getenv("API_KEY")
     url = (
@@ -40,5 +40,3 @@ def get_exchange_rate(amount: str, base_currency: str, conversion_currency: str 
     except ValueError as e:
         print(f"❌ Ошибка преобразования в float: {e}")
         return None
-
-
