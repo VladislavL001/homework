@@ -31,7 +31,7 @@ def card_number_generator(start: int = 1, stop: int = 9999999999999999) -> Any:
 #     {
 #         "id": 939719570,
 #         "state": "EXECUTED",
-#         "date": "2018-06-30T02:08:58.425572",
+#         "data": "2018-06-30T02:08:58.425572",
 #         "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}},
 #         "description": "Перевод организации",
 #         "from": "Счет 75106830613657916952",
@@ -40,7 +40,7 @@ def card_number_generator(start: int = 1, stop: int = 9999999999999999) -> Any:
 #     {
 #         "id": 142264268,
 #         "state": "EXECUTED",
-#         "date": "2019-04-04T23:20:05.206878",
+#         "data": "2019-04-04T23:20:05.206878",
 #         "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
 #         "description": "Перевод со счета на счет",
 #         "from": "Счет 19708645243227258542",
@@ -49,7 +49,7 @@ def card_number_generator(start: int = 1, stop: int = 9999999999999999) -> Any:
 #     {
 #         "id": 728394012,
 #         "state": "EXECUTED",
-#         "date": "2021-11-25T08:30:15.987654",
+#         "data": "2021-11-25T08:30:15.987654",
 #         "operationAmount": {"amount": "4200.00", "currency": {"name": "GBP", "code": "GBP"}},
 #         "description": "Перевод заработной платы",
 #         "from": "Счет 44455566677788899900",
