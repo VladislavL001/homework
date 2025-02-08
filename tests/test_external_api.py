@@ -1,8 +1,9 @@
 from unittest.mock import Mock, patch
 
 import pytest
+import requests
 
-from src.external_api import get_exchange_rate  # Импортируем твою функцию
+from src.external_api import get_exchange_rate
 
 
 @patch("requests.request")
@@ -31,6 +32,7 @@ def test_get_exchange_rate_invalid_currency(mock_request: Mock, capsys: pytest.C
 
 @patch("requests.request")
 def test_get_exchange_rate_api_failure(mock_request: Mock, capsys: pytest.CaptureFixture) -> None:
+    """Тест на обработку неверного ответа сервера"""
     mock_response = Mock()
     mock_response.status_code = 500
     mock_response.json.return_value = {}
@@ -38,4 +40,24 @@ def test_get_exchange_rate_api_failure(mock_request: Mock, capsys: pytest.Captur
     result = get_exchange_rate("1", "USD")
     captured = capsys.readouterr()
     assert captured.out == "❌ Ошибка при запросе API. Статус код: 500\n"
+    assert result is None
+
+
+@patch("requests.request")
+def test_get_exchange_rate_request_exception(mock_request: Mock, capsys: pytest.CaptureFixture) -> None:
+    """Тест на обработку библиотеки requests"""
+    mock_request.side_effect = requests.exceptions.RequestException("Ошибка сети")
+    result = get_exchange_rate("1", "USD")
+    captured = capsys.readouterr()
+    assert captured.out == "❌ Ошибка запроса: Ошибка сети\n"
+    assert result is None
+
+
+@patch("requests.request")
+def test_get_exchange_rate_value_error(mock_request: Mock, capsys: pytest.CaptureFixture) -> None:
+    """Тест на обработку ошибки при невозможности перевода в float"""
+    mock_request.side_effect = ValueError("Ошибка результата")
+    result = get_exchange_rate("1", "USD")
+    captured = capsys.readouterr()
+    assert captured.out == "❌ Ошибка преобразования в float: Ошибка результата\n"
     assert result is None

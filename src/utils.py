@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Union
+from typing import Any, Union
 
 from src.external_api import get_exchange_rate
 
@@ -27,9 +27,8 @@ def load_transactions_from_json(file_path: str) -> list[dict]:
     return data_py if isinstance(data_py, list) else []  # Тотальная обработка исключений
 
 
-def convert_to_rub(data: Union[list[dict], dict]) -> Union[list[dict], float, None]:
+def convert_to_rub(data: Union[list[dict], dict, Any]) -> Union[list[dict], float, None]:
     """Конвертация валютных транзакций в рубли."""
-
     usd_rate = get_exchange_rate("1", "USD")
     eur_rate = get_exchange_rate("1", "EUR")
 
@@ -106,9 +105,7 @@ def convert_to_rub(data: Union[list[dict], dict]) -> Union[list[dict], float, No
     return []
 
 
-transactions = load_transactions_from_json(
-    universal_path_file()
-)  # Передача пути в функцию load_transactions_from_json
+transactions = load_transactions_from_json(universal_path_file())
 func = convert_to_rub(transactions)
 
-print(transactions)
+print(func)
