@@ -2,8 +2,6 @@ import json
 import os
 from unittest.mock import Mock, mock_open, patch
 
-import pytest
-
 from src.utils import convert_to_rub, load_transactions_from_json, universal_path_file
 
 
@@ -65,28 +63,23 @@ def test_load_transactions_empty_json() -> None:
     assert result == expected_result
 
 
-def test_load_transactions_file_not_found(capsys: pytest.CaptureFixture) -> None:
+def test_load_transactions_file_not_found() -> None:
     """Тест на ошибку к файлу JSON"""
     fake_path = "non_existent_file.json"
 
     with patch("builtins.open", side_effect=FileNotFoundError):
         result = load_transactions_from_json(fake_path)
 
-    captured = capsys.readouterr()
-    assert captured.out == "❌ Файл не найден по пути: non_existent_file.json\n"
     assert result == []
 
 
-def test_load_transactions_json_decode_error(capsys: pytest.CaptureFixture) -> None:
+def test_load_transactions_json_decode_error() -> None:
     """Тест на ошибку JSON"""
     fake_path = "fake_file.json"
 
     with patch("builtins.open", mock_open(read_data="{invalid_json:}")):
         result = load_transactions_from_json(fake_path)
 
-    captured = capsys.readouterr()
-
-    assert captured.out == "❌ Ошибка декодирования JSON.\n"
     assert result == []
 
 

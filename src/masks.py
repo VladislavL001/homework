@@ -1,9 +1,9 @@
-from typing import Union
 import logging
 import os
+from typing import Union
 
 logging.basicConfig(
-    filename= os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs", "masks.log"),
+    filename=os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs", "masks.log"),
     filemode="w",
     format="%(asctime)s\n%(name)s:%(levelname)s\n%(message)s\n",
     level=logging.INFO,
@@ -18,9 +18,9 @@ def get_mask_card_number(card_number: Union[str]) -> Union[str]:
     card_number_card_str = str(card_number)
     logger.info(f"Получен номер карты: {card_number_card_str}")
 
-    logger.info(f"Проверка соответствия номера карты формату")
+    logger.info("Проверка соответствия номера карты формату")
     if len(card_number_card_str) == 16 and card_number_card_str.isdigit():
-        logger.info(f"Карта соответствует формату. Делаю маску")
+        logger.info("Карта соответствует формату. Делаю маску")
         masked_number_card = (
             f"{card_number_card_str[0:4]} {card_number_card_str[4:6]}** **** {card_number_card_str[12:]}"
         )
@@ -37,9 +37,9 @@ def get_mask_account(account_number: Union[str]) -> Union[str]:
     account_number_str = str(account_number)
     logger.info(f"Получен номер счета: {account_number_str}")
 
-    logger.info(f"Проверка соответствия номера счета формату")
+    logger.info("Проверка соответствия номера счета формату")
     if len(account_number_str) == 20 and account_number_str.isdigit():
-        logger.info(f"Номер счета соответствует формату. Делаю маску")
+        logger.info("Номер счета соответствует формату. Делаю маску")
         masked_number_account = f"**{account_number_str[-4:]}"
     else:
         logger.error("Номер счет не соответствует формату")
@@ -47,5 +47,3 @@ def get_mask_account(account_number: Union[str]) -> Union[str]:
 
     logger.info("Возврат счет с маской")
     return masked_number_account
-
-get_mask_account("43")
