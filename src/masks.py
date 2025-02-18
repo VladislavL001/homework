@@ -7,7 +7,7 @@ logging.basicConfig(
     filemode="w",
     format="%(asctime)s\n%(name)s:%(levelname)s\n%(message)s\n",
     level=logging.INFO,
-    encoding="utf-8"
+    encoding="utf-8",
 )
 
 logger = logging.getLogger("masks.py")
