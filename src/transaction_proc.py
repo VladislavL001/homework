@@ -16,6 +16,7 @@ def read_csv(file_path: str, sep: str = ";") -> list:
         raise FileNotFoundError(f"Файл {file_path} не найден.")
     try:
         df = pd.read_csv(file_path, sep=sep)
+        df.fillna(0, inplace=True)
         data_dict = df.to_dict("records")
 
         return data_dict
@@ -35,16 +36,14 @@ def universal_path_file_excel() -> str:
 
 
 def read_excel(file_path: str) -> list:
-    """Функция принимает csv файл и возвращает список словарей."""
+    """Функция принимает excel файл и возвращает список словарей."""
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Файл {file_path} не найден.")
     try:
         df = pd.read_excel(file_path)
+        df.fillna(0, inplace=True)
         data_dict = df.to_dict("records")
         return data_dict
     except Exception as e:
         print(f"Ошибка при чтении файла: {e}")
         return []
-
-
-read_excel(universal_path_file_excel())
