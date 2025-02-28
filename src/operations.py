@@ -2,12 +2,12 @@ import re
 from collections import Counter
 
 
-def search_operations(operations: list[dict], search_query: str) ->list[dict]:
+def search_operations(operations: list[dict], search_query: str) -> list[dict]:
     """Функция ищет операции по строке в описании"""
     pattern = re.compile(search_query, re.IGNORECASE)
     result = []
     for operation in operations:
-        description = operation.get("description","")
+        description = operation.get("description", "")
         if re.search(pattern, description):
             result.append(operation)
 

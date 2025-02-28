@@ -1,15 +1,17 @@
-from src.operations import search_operations, categorize_operations
 import pytest
+
+from src.operations import categorize_operations, search_operations
+
 
 @pytest.fixture
 def data() -> list[dict]:
     """Данные для тестов"""
-    data_list =  [
-            {"id": 1, "description": "Перевод с карты на карту", "amount": 100},
-            {"id": 2, "description": "Открытие вклада", "amount": 200},
-            {"id": 3, "description": "Перевод на счет", "amount": 300},
-            {"id": 4, "description": "Погашение кредита", "amount": 150},
-        ]
+    data_list = [
+        {"id": 1, "description": "Перевод с карты на карту", "amount": 100},
+        {"id": 2, "description": "Открытие вклада", "amount": 200},
+        {"id": 3, "description": "Перевод на счет", "amount": 300},
+        {"id": 4, "description": "Погашение кредита", "amount": 150},
+    ]
     return data_list
 
 
@@ -18,7 +20,7 @@ def test_search_operations_found(data: list[dict]) -> None:
     search_query = "перевод"
     expected_result = [
         {"id": 1, "description": "Перевод с карты на карту", "amount": 100},
-        {"id": 3, "description": "Перевод на счет", "amount": 300}
+        {"id": 3, "description": "Перевод на счет", "amount": 300},
     ]
     result = search_operations(data, search_query)
     assert result == expected_result
@@ -27,7 +29,7 @@ def test_search_operations_found(data: list[dict]) -> None:
 def test_search_operations_not_found(data: list[dict]) -> None:
     """Функция не находит операций по строке в описании"""
     search_query = "депозит"
-    expected_result = []
+    expected_result: list = []
     result = search_operations(data, search_query)
     assert result == expected_result
 
@@ -42,6 +44,7 @@ def test_search_operations_case_insensitive(data: list[dict]) -> None:
     result = search_operations(data, search_query)
     assert result == expected_result
 
+
 def test_search_operations_empty_query(data: list[dict]) -> None:
     """Пустой запрос возвращает все операции"""
     search_query = ""
@@ -50,34 +53,37 @@ def test_search_operations_empty_query(data: list[dict]) -> None:
     assert result == expected_result
 
 
-def test_categorize_operations_success(data):
+def test_categorize_operations_success(data: list[dict]) -> None:
     """Тестируем правильную работу функции для существующих категорий"""
     categories = ["перевод", "кредит"]
-    expected = {'перевод': 2, 'кредит': 1}
+    expected = {"перевод": 2, "кредит": 1}
     result = categorize_operations(data, categories)
     assert result == expected
 
-def test_categorize_operations_no_match(data):
+
+def test_categorize_operations_no_match(data: list[dict]) -> None:
     """Тестируем ситуацию, когда нет совпадений с категориями"""
     categories = ["брокерский счет"]
-    expected = {}
+    expected: dict = {}
     result = categorize_operations(data, categories)
     assert result == expected
 
-def test_categorize_operations_empty_list(data: list[dict]):
+
+def test_categorize_operations_empty_list(data: list[dict]) -> None:
     """Тестируем ситуацию с пустым списком операций"""
     result = categorize_operations([], ["кредит"])
     assert result == {}
 
 
-def test_categorize_operations_empty_categories(data):
+def test_categorize_operations_empty_categories(data: list[dict]) -> None:
     """Тестируем ситуацию с пустым списком категорий"""
     result = categorize_operations(data, [])
     assert result == {}
 
-def test_categorize_operations_case_insensitive(data):
+
+def test_categorize_operations_case_insensitive(data: list[dict]) -> None:
     """Тестируем нечувствительность к регистру"""
     categories = ["Перевод", "кредИТ"]
-    expected = {'Перевод': 2, 'кредИТ': 1}
+    expected = {"Перевод": 2, "кредИТ": 1}
     result = categorize_operations(data, categories)
     assert result == expected

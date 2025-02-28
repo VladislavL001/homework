@@ -112,8 +112,10 @@ def test_convert_to_rub_dict(mock_get_exchange_rate: Mock) -> None:
     assert result == expected
 
 
-def test_convert_to_rub_invalid_data() -> None:
+@patch("src.utils.get_exchange_rate")
+def test_convert_to_rub_invalid_data(mock_get_exchange_rate: Mock) -> None:
     """Тест на неверный формат данных"""
+    mock_get_exchange_rate.return_value = 0.01
     result = convert_to_rub("invalid_data")
     assert result == []
 
@@ -127,15 +129,19 @@ def test_convert_to_rub_error_get_exchange_rate(mock_get_exchange_rate: Mock) ->
     assert result == []
 
 
-def test_convert_to_rub_invalid_transaction() -> None:
+@patch("src.utils.get_exchange_rate")
+def test_convert_to_rub_invalid_transaction(mock_get_exchange_rate: Mock) -> None:
     """Тест если amount имеет некорректный формат"""
+    mock_get_exchange_rate.return_value = 0.01
     data = [{"id": 1, "operationAmount": {"amount": "abc", "currency": {"code": "USD"}}}]  # Некорректная сумма
     result = convert_to_rub(data)
     assert result == []
 
 
-def test_convert_to_rub_missing_key() -> None:
+@patch("src.utils.get_exchange_rate")
+def test_convert_to_rub_missing_key(mock_get_exchange_rate: Mock) -> None:
     """Тест если отсутствует ключ amount"""
+    mock_get_exchange_rate.return_value = 0.01
     data = [{"id": 1}]
     result = convert_to_rub(data)
     assert result == []

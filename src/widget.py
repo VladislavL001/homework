@@ -35,7 +35,12 @@ def mask_account_card(card_type_number: str) -> str:
 def get_date(data_form: str) -> str:
     """Функция преобразует формат даты в ДД.ММ.ГГГГ"""
     try:
-        parsed_date = datetime.fromisoformat(data_form)
+        parsed_date = datetime.fromisoformat(data_form.replace("Z", ""))
         return parsed_date.strftime("%d.%m.%Y")
     except ValueError:
-        return "Неверный формат даты"
+
+        try:
+            parsed_date = datetime.strptime(data_form, "%Y-%m-%d %H:%M:%S")
+            return parsed_date.strftime("%d.%m.%Y")
+        except ValueError:
+            return "Неверный формат даты"
